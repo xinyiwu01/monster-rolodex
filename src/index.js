@@ -4,10 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+//root: where it should be: public->index.html
 const root = ReactDOM.createRoot(document.getElementById('root'));
+//render the entire app, strict mode: warnings about old versions
 root.render(
   <React.StrictMode>
-    <App />
+    <App />    
   </React.StrictMode>
 );
 
