@@ -1,6 +1,7 @@
-import logo from './logo.svg';
+import CardList from './components/card-list/card-list.component';
 import './App.css';
 import { Component } from 'react'; 
+import SearchBox from './components/search-box/search-box.component';
 
 class App extends Component {
   //all class components can access, keep track of state, helping modification
@@ -9,7 +10,8 @@ class App extends Component {
     //call constrcutor() first, initailize all variables, react renders
     // when variables change later, react will rerender the page
     this.state = { // a json object
-      monsters: []
+      monsters: [],
+      searchFeild: ''
     }
   }
 
@@ -29,16 +31,52 @@ class App extends Component {
     }) // pass reponse as users
 
   }
+
+  onSearchChange = (event) => { //change handler, just like onClick(), invoked each time input changes
+    const searchFeild = event.target.value.toLocaleLowerCase();
+  
+    this.setState(
+      () => {
+        return {searchFeild}; //key and value of the var searchFeild will match
+      }
+    );
+  }
+
   //render function in component class, what to render
   render() {
-    return (
+    const {monsters, searchFeild} = this.state; //pull from this and cast to constant
+    const {onSearchChange} = this;
+
+    // if want to modify an array, create a new array for react to detect the change
+    const filteredMonsters = monsters.filter((monster) => {return monster.name.toLocaleLowerCase()
+      .includes(searchFeild)});//should be a boolean value
+
+    return ( //return html components
       <div className="App">
-        {this.state.monsters.map((monster) => {
+        {/** 
+        <input
+          className='search-box'
+          type='search'
+          placeholder='search monsters' //placeholder when nonting typed
+          onChange={onSearchChange}
+        />
+        */}
+        <h1 className='app-title'>My Monsters Rolodex</h1>
+        <SearchBox 
+          className='monsters-search-box' 
+          onChangeHandler={onSearchChange} 
+          placeholder='search monsters'/>
+
+        <CardList monsters={filteredMonsters} />
+
+        {/** 
+        {filteredMonsters.map((monster) => {
           return (
           <div key = {monster.id}>
             <h1>{monster.name}</h1>
             </div>);
         })}
+      */}
           
           {/*use curly braces to access JS variable in JSX/HTML */}
           
